@@ -102,27 +102,27 @@ namespace PARCIAL1A.Controllers
 
         }
         [HttpDelete]
-        [Route("eliminarAutor/{id}")]
+        [Route("eliminarLibro/{id}")]
 
-        public IActionResult EliminarAutor(int id)
+        public IActionResult EliminarLibro(int id)
         {
             try
             {
 
-                Autores? Autor = (from e in _PARCIAL1AContext.Autores
+                Libros? Libro = (from e in _PARCIAL1AContext.Libros
                                   where e.Id == id
                                   select e).FirstOrDefault();
 
-                if (Autor == null)
+                if (Libro == null)
                 {
                     return NotFound();
                 }
 
-                _PARCIAL1AContext.Autores.Attach(Autor);
-                _PARCIAL1AContext.Autores.Remove(Autor);
+                _PARCIAL1AContext.Libros.Attach(Libro);
+                _PARCIAL1AContext.Libros.Remove(Libro);
                 _PARCIAL1AContext.SaveChanges();
 
-                return Ok(Autor);
+                return Ok(Libro);
             }
             catch (Exception ex)
             {
