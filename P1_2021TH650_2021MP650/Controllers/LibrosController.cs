@@ -36,6 +36,32 @@ namespace PARCIAL1A.Controllers
                 return BadRequest(ex.Message);
             }
         }
+     
+        [HttpGet]
+        [Route("GetLibro*Autor/{AutorNombre}")]
+
+        public IActionResult GetLibroAutor(string AutorNombre)
+        {
+            var listadoLibro = (from l in _PARCIAL1AContext.Libros
+                                join al in _PARCIAL1AContext.AutorLibro
+                                    on l.Id equals al.LibroId
+                                join a in _PARCIAL1AContext.Autores
+                                    on al.AutorId equals a.Id
+                                 where a.Nombre.Contains(AutorNombre)
+                select new
+                {
+                    a.Nombre,
+                    l.Titulo,
+                    l.Id,
+                    al.Orden
+                }).ToList();
+
+            if (listadoLibro.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(listadoLibro);
+        }
 
         [HttpGet]
         [Route("GetByIdLibro/{id}")]
