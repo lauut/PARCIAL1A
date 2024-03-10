@@ -38,22 +38,21 @@ namespace PARCIAL1A.Controllers
         }
      
         [HttpGet]
-        [Route("GetLibro*Autor/{AutorNombre}")]
+        [Route("GetLibro*Autor/{autor}")]
 
-        public IActionResult GetLibroAutor(string AutorNombre)
+        public IActionResult GetLibroAutor(string autor)
         {
             var listadoLibro = (from l in _PARCIAL1AContext.Libros
                                 join al in _PARCIAL1AContext.AutorLibro
                                     on l.Id equals al.LibroId
                                 join a in _PARCIAL1AContext.Autores
                                     on al.AutorId equals a.Id
-                                 where a.Nombre.Contains(AutorNombre)
+                                 where a.Nombre.Contains(autor)
                 select new
                 {
                     a.Nombre,
                     l.Titulo,
-                    l.Id,
-                    al.Orden
+                    l.Id
                 }).ToList();
 
             if (listadoLibro.Count == 0)

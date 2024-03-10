@@ -36,8 +36,8 @@ namespace PARCIAL1A.Controllers
             }
         }
         [HttpGet]
-        [Route("GetAllPosts*Libros/{libronombre}")]
-        public IActionResult GetJ(string libronombre)
+        [Route("GetAllPosts*Libros/{nombreLibro}")]
+        public IActionResult GetNL(string nombreLibro)
 
         {
             try
@@ -50,7 +50,7 @@ namespace PARCIAL1A.Controllers
                                     on at.Id equals al.AutorId
                                     join l in _PARCIAL1AContext.Libros
                                     on al.LibroId equals l.Id
-                                    where l.Titulo.Contains(libronombre)
+                                    where l.Titulo.Contains(nombreLibro)
 
                                     select new
                                     {
@@ -75,19 +75,20 @@ namespace PARCIAL1A.Controllers
             }
         }
         [HttpGet]
-        [Route("GetPost*Autor/{AutorNombre}")]
+        [Route("GetPost*Autor/{autor}")]
 
-        public IActionResult GetPostbyAutor(string AutorNombre)
+        public IActionResult GetPostbyAutor(string autor)
         {
             var listadopost =( from p in _PARCIAL1AContext.Posts
-                                join A in _PARCIAL1AContext.Autores
-                                on p.AutorId equals A.Id
-                                 where A.Nombre.Contains(AutorNombre)
+                                join at in _PARCIAL1AContext.Autores
+                                on p.AutorId equals at.Id
+                                 where at.Nombre.Contains(autor)
                 select new
                 {
                     p.Id,
                     p.Titulo,
-                    A.Nombre,
+                    at.Nombre,
+                    IdAutor= at.Id,
                     p.Contenido,
                     p.FechaPublicacion
                     
@@ -99,9 +100,6 @@ namespace PARCIAL1A.Controllers
             }
             return Ok(listadopost);
         }
-
-
-
 
         [HttpGet]
         [Route("GetByIdPost/{id}")]
